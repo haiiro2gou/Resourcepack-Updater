@@ -1,6 +1,6 @@
 # Server Resourcepack Updater
 
-サーバーリソースパックを更新するスクリプト
+サーバーリソースパックを更新するスクリプト  
 Script to update server resourcepack
 
 ## 使い方 (How to use)
