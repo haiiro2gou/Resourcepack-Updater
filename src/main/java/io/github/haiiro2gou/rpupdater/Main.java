@@ -18,14 +18,15 @@ import java.util.Properties;
 
 public class Main
 {
+    static final String propPath = "server.properties";
+    static final String rpPath = "resources.zip";
+
     public static void main(String[] args)
     {
-        String propPath = "server.properties";
-
         try {
             String rpUrl = getPropertyValue(propPath, "resource-pack");
-            String rpHash = calculateFileHash(downloadFile(new URL(rpUrl), "resources.zip"), "SHA-1");
-        
+            downloadFile(new URL(rpUrl), rpPath);
+            String rpHash = calculateFileHash(rpPath, "SHA-1");        
             updatePropertyValue(propPath, "resource-pack-sha1", rpHash);
         }
         catch (IOException | NoSuchAlgorithmException e)
@@ -58,12 +59,12 @@ public class Main
     {
         MessageDigest hashAlgorithm = MessageDigest.getInstance(algorithm);
 
-        try(DigestInputStream digestInput = new DigestInputStream(Files.newInputStream(path), hashAlgorithm))
+        try(DigestInputStream digestInput = new DigestInputStream(Files.newInputStream(Path.of(path)), hashAlgorithm))
         { while(digestInput.read() != -1) {} }
 
         byte[] hashBytes = hashAlgorithm.digest();
         StringBuilder hexBuilder = new StringBuilder();
-        for(auto b : hashBytes) {
+        for(byte b : hashBytes) {
             hexBuilder.append(String.format("%02x", b));
         }
 
